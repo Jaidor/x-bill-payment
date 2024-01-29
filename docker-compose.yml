@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: bill-payment-service
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: billpay
+      MYSQL_PASSWORD: password
+      MYSQL_ALLOW_EMPTY_PASSWORD:
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+networks:
+ default:
+    name: bill-payment-service
+
+volumes:
+  mysql_data:
