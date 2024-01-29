@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { PaymentDto } from './dto';
-import { encodeString, decodedString } from '../common/random';
+import { encodeString } from '../common/random';
 
 @Injectable()
 export class PaymentsService {
@@ -16,23 +15,23 @@ export class PaymentsService {
      * @returns 
      */
 
-    async savePayments (paymentDto: PaymentDto) {
+    async savePayments ( pay: any ) {
         try {
             /** Save into DB */
             const paymentData = await this.prisma.payments.create({
                 data: {
-                    transaction_id: paymentDto.transactionId,
-                    transaction_type: paymentDto.transactionType,
-                    user_id: paymentDto.userId,
-                    amount: paymentDto.amount,
-                    commission_amount: paymentDto.commissionAmount,
-                    memo: paymentDto.memo,
-                    provider_type: paymentDto.providerType,
-                    received_from: paymentDto.receivedFrom,
-                    paid_to: paymentDto.paidTo,
-                    currency_id: paymentDto.currencyId,
-                    ledger: paymentDto.ledger,
-                    reversal: paymentDto.reversal
+                    transaction_id: pay.transactionId,
+                    transaction_type: pay.transactionType,
+                    user_id: pay.userId,
+                    amount: pay.amount,
+                    commission_amount: pay.commissionAmount,
+                    memo: pay.memo,
+                    provider_type: pay.providerType,
+                    received_from: pay.receivedFrom,
+                    paid_to: pay.paidTo,
+                    currency_id: pay.currencyId,
+                    ledger: pay.ledger,
+                    reversal: pay.reversal
                 }
             });
             return paymentData;
@@ -82,7 +81,7 @@ export class PaymentsService {
             }
             
             /** Save Payment */
-            const pay = {
+            const fundingData = {
                 transactionId: data.transactionId,
                 transactionType: data.transactionType,
                 userId: data.userId,
@@ -94,13 +93,14 @@ export class PaymentsService {
                 ledger: encodeString(transactions),
                 reversal: encodeString(reversal)
             }
-            const walletFundingPayments = await this.savePayments(pay);
+
+            const walletFundingPayments = await this.savePayments(fundingData);
             if(walletFundingPayments) {
                 return true;
             }
 
         } catch (error) {
-            throw error
+            throw error;
         }
     }
 }

@@ -45,7 +45,9 @@ model payments {
   amount Decimal @db.Decimal(40, 4)
   commission_amount Decimal @db.Decimal(40, 4)
   memo String
+  provider_type String
   provider_status String
+  provider_message String
   received_from String
   paid_to String
   currency_id Int
