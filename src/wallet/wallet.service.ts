@@ -25,12 +25,12 @@ export class WalletService {
             let wallet_book: any, wallet_funding_ledger: any;
             const { amount, fundingType } = walletDto;
             if(fundingType === "Transfer") {
-                wallet_funding_ledger = await this.prisma.ledgers.findUnique({ 
+                wallet_funding_ledger = await this.prisma.ledgers.findFirst({ 
                     where: {
                         ledger_type: "WALLET BANK TRANSFER" 
                     } 
                 });
-                wallet_book = await this.prisma.books.findUnique({ 
+                wallet_book = await this.prisma.books.findFirst({ 
                     where: {
                         book_type: wallet_funding_ledger.ledger_type,
                         book_source_id: wallet_funding_ledger.id 
@@ -39,12 +39,12 @@ export class WalletService {
             }
 
             if(fundingType === "Virtual Account") {
-                wallet_funding_ledger = await this.prisma.ledgers.findUnique({ 
+                wallet_funding_ledger = await this.prisma.ledgers.findFirst({ 
                     where: {
                         ledger_type: "WALLET VIRTUAL ACCOUNT" 
                     } 
                 });
-                wallet_book = await this.prisma.books.findUnique({ 
+                wallet_book = await this.prisma.books.findFirst({ 
                     where: {
                         book_type: wallet_funding_ledger.ledger_type,
                         book_source_id: wallet_funding_ledger.id 
@@ -53,7 +53,7 @@ export class WalletService {
             }
 
             /** Fetch wallet book id */
-            const agent_wallet_book = await this.prisma.books.findUnique({ 
+            const agent_wallet_book = await this.prisma.books.findFirst({ 
                 where: {
                     book_type: "AGENT",
                     book_source_id: user.id 
@@ -78,7 +78,7 @@ export class WalletService {
 
             const response = await this.payment.processWalletFunding(processData); /** Save payment */
             return response;
-            
+
         } catch (error) {
             throw error;
         }
