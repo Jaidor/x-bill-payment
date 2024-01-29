@@ -33,7 +33,7 @@ export class WalletService {
                 wallet_book = await this.prisma.books.findFirst({ 
                     where: {
                         book_type: wallet_funding_ledger.ledger_type,
-                        book_source_id: wallet_funding_ledger.id 
+                        book_source: wallet_funding_ledger.id 
                     } 
                 });
             }
@@ -47,7 +47,7 @@ export class WalletService {
                 wallet_book = await this.prisma.books.findFirst({ 
                     where: {
                         book_type: wallet_funding_ledger.ledger_type,
-                        book_source_id: wallet_funding_ledger.id 
+                        book_source: wallet_funding_ledger.id 
                     } 
                 });
             }
@@ -56,7 +56,7 @@ export class WalletService {
             const agent_wallet_book = await this.prisma.books.findFirst({ 
                 where: {
                     book_type: "AGENT",
-                    book_source_id: user.id 
+                    book_source: user.id 
                 } 
             });
 
@@ -76,8 +76,8 @@ export class WalletService {
                 currencyId: 1
             };
 
-            const response = await this.payment.processWalletFunding(processData); /** Save payment */
-            return response;
+            // const response = await this.payment.processWalletFunding(processData); /** Save payment */
+            return processData;
 
         } catch (error) {
             throw error;

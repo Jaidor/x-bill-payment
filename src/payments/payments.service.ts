@@ -94,10 +94,12 @@ export class PaymentsService {
                 reversal: encodeString(reversal)
             }
 
-            const walletFundingPayments = await this.savePayments(fundingData);
-            if(walletFundingPayments) {
-                return true;
-            }
+            // const walletFundingPayments = await this.savePayments(fundingData);
+            // if(walletFundingPayments) {
+            //     return true;
+            // }
+
+            return true;
 
         } catch (error) {
             throw error;

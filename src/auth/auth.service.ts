@@ -33,7 +33,7 @@ export class AuthService {
             /** Wallet / Book balance for agent */
             await this.prisma.books.create({
                 data: {
-                    book_source_id: user.id,
+                    book_source: user.id,
                     book_type: "AGENT"
                 }
             });
