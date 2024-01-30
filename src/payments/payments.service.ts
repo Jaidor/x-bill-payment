@@ -40,7 +40,7 @@ export class PaymentsService {
         }
     }
 
-    async processWalletFunding ( data: any ): Promise<boolean> {
+    async processWalletFunding ( data: any ) {
         try {
 
             const date = new Date();
@@ -87,6 +87,7 @@ export class PaymentsService {
                 userId: data.userId,
                 amount: data.amount,
                 memo: `${data.memo} - ${data.agentWalletName}`,
+                currencyId: data.currencyId,
                 providerType: data.providerType,
                 receivedFrom: `${data.names}`,
                 paidTo: data.ledgerName,
@@ -94,12 +95,10 @@ export class PaymentsService {
                 reversal: encodeString(reversal)
             }
 
-            // const walletFundingPayments = await this.savePayments(fundingData);
-            // if(walletFundingPayments) {
-            //     return true;
-            // }
-
-            return true;
+            const walletFundingPayments = await this.savePayments(fundingData);
+            if(walletFundingPayments) {
+                return true;
+            }
 
         } catch (error) {
             throw error;

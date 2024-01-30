@@ -51,6 +51,7 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
       statusCode: status,
       message: this.cleanUpException(exception),
       status: false,
+      data: []
     });
   }
 

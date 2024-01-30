@@ -45,28 +45,32 @@ export class Exceptions {
         status = {
           statusCode: HttpStatus.BAD_REQUEST,
           message: errorResponseMessage.BAD_REQUEST,
-          status: responseStatus.FAILED
+          status: responseStatus.FAILED,
+          data: []
         }
         break;
       case 'P2002':
         status = {
           statusCode: HttpStatus.CONFLICT,
           message: errorResponseMessage.UNIQUE,
-          status: responseStatus.FAILED
+          status: responseStatus.FAILED,
+          data: []
         }
         break;
       case 'P2025':
         status = {
           statusCode: HttpStatus.NOT_FOUND,
           message: errorResponseMessage.NOT_FOUND,
-          status: responseStatus.FAILED
+          status: responseStatus.FAILED,
+          data: []
         }
         break;
       default:
         status = {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           message: errorResponseMessage.SERVER_ERROR,
-          status: responseStatus.FAILED
+          status: responseStatus.FAILED,
+          data: []
         };
         break;
     }

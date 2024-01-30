@@ -60,7 +60,7 @@ export class WalletService {
                 } 
             });
 
-            const transaction_id = generateTransactionId(); /** Generate transaction Id */
+            const transactionId = generateTransactionId(); /** Generate transaction Id */
             const processData = {
                 agentWalletId: agent_wallet_book.id,  
                 walletLedgerId: wallet_book.id,
@@ -72,12 +72,12 @@ export class WalletService {
                 names: user.name,
                 memo: "Agent Wallet Funding",
                 amount: amount,
-                transaction_id: transaction_id,
+                transactionId: transactionId,
                 currencyId: 1
             };
 
-            // const response = await this.payment.processWalletFunding(processData); /** Save payment */
-            return processData;
+            const response = await this.payment.processWalletFunding(processData); /** Save payment */
+            return response;
 
         } catch (error) {
             throw error;

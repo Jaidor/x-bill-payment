@@ -28,8 +28,8 @@ model Books {
   id    Int    @id @default(autoincrement())
   book_source  Int
   book_type String @default("")
-  book_balance Decimal @db.Decimal(40, 4) 
-  book_recon_amount Decimal @db.Decimal(40, 4)
+  book_balance Decimal @db.Decimal(40, 4)  @default(0)
+  book_recon_amount Decimal @db.Decimal(40, 4) @default(0)
   book_status Int @default(1)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -42,8 +42,8 @@ model payments {
   transaction_id  String
   transaction_type String
   user_id Int
-  amount Decimal @db.Decimal(40, 4)
-  commission_amount Decimal @db.Decimal(40, 4)
+  amount Decimal @db.Decimal(40, 4) @default(0)
+  commission_amount Decimal @db.Decimal(40, 4) @default(0)
   memo String
   provider_type String @default("")
   provider_status String @default("")
@@ -51,8 +51,8 @@ model payments {
   received_from String
   paid_to String
   currency_id Int
-  ledger String
-  reversal String
+  ledger String @db.VarChar(1000)
+  reversal String @db.VarChar(1000)
   status paymentstatus @default(PENDING)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

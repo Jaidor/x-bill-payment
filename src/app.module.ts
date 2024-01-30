@@ -8,12 +8,10 @@ import { UserModule } from './user/user.module';
 import { WalletModule } from './wallet/wallet.module';
 import { PaymentsController } from './payments/payments.controller';
 import { PaymentsModule } from './payments/payments.module';
-import { SeederService } from './seeder/seeder.service';
-import { SeederModule } from './seeder/seeder.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, PrismaModule, UserModule, WalletModule, PaymentsModule, SeederModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, PrismaModule, UserModule, WalletModule, PaymentsModule],
   controllers: [AppController, PaymentsController],
-  providers: [AppService, SeederService],
+  providers: [AppService],
 })
 export class AppModule {}

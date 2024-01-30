@@ -53,7 +53,6 @@ export class AuthService {
     
     async login (request: AuthLoginDto) {
         try {
-
             /** Checks for email */
             const user = await this.prisma.user.findUnique({ 
                 where: {
