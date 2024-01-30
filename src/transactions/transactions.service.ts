@@ -110,8 +110,8 @@ export class TransactionsService {
                 });
                 thisMonthTransactions.forEach((element) => {
                     currentMonthBalance = currentMonthBalance.add(element.amount);
+                    transactionsBalance[element.id] = reconPointBalance + currentMonthBalance;
                 });
-                transactionsBalance[element.id] = reconPointBalance + currentMonthBalance;
 
                 /** Update book balance */
                 const bookBalance = reconPointBalance.add(currentMonthBalance);
