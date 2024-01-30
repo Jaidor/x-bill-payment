@@ -2,13 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { WalletDto } from './dto';
 import { User } from '@prisma/client';
-import { generateTransactionId } from '../common/random';
+import { decodedString, generateTransactionId, statusEnum } from '../common/random';
 import { PaymentsService } from 'src/payments/payments.service';
+import { TransactionsService } from '../transactions/transactions.service';
 
 @Injectable()
 export class WalletService {
     constructor(
-        private prisma: PrismaService, private payment: PaymentsService,
+        private prisma: PrismaService, 
+        private payment: PaymentsService, 
+        private transactions: TransactionsService
     ) {}
 
     async initiateWalletFunding (user: User, walletDto: WalletDto) {
@@ -77,7 +80,48 @@ export class WalletService {
             };
 
             const response = await this.payment.processWalletFunding(processData); /** Save payment */
-            return response;
+            /** Post transactions */
+            if(response === true) {
+                const transactionRecord = await this.prisma.payments.findFirst({
+                    where: {
+                        transaction_id: transactionId
+                    },
+                    orderBy: {
+                        id: 'desc'
+                    },
+                    take: 1
+                });
+
+                if(transactionRecord.status === statusEnum().PENDING) {
+                    const ledger_posting = decodedString(transactionRecord.ledger);
+                    const postTransaction = await this.transactions.postTransactions(ledger_posting);
+                    if(postTransaction === true) {
+                        await this.prisma.payments.updateMany({
+                            where: {
+                              transaction_id: transactionId,
+                            },
+                            data: {
+                              status: statusEnum().SUCCESSFUL,
+                            },
+                        });
+                    } else {
+                        await this.prisma.payments.updateMany({
+                            where: {
+                              transaction_id: transactionId,
+                            },
+                            data: {
+                              status: statusEnum().DECLINED,
+                            },
+                        });
+
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+
+            return true;
 
         } catch (error) {
             throw error;

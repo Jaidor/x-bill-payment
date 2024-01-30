@@ -1,4 +1,8 @@
-
+/**
+ * Generate custom
+ * transaction Id
+ * @returns 
+ */
 export function generateTransactionId () {
     let randomNumber = '';
     let count = 0;
@@ -18,14 +22,42 @@ export function generateTransactionId () {
     return uniqueCode;
 }
 
+/**
+ * Encode string
+ * @param data 
+ * @returns 
+ */
+
 export function encodeString ( data: any ) {
     const bufferObj = Buffer.from(JSON.stringify(data), "utf8");
     const base64String = bufferObj.toString("base64");
     return base64String;
 }
 
+/**
+ * Decode base64string
+ * @param base64String 
+ * @returns 
+ */
+
 export function decodedString ( base64String: any ) {
     const bufferObj = Buffer.from(base64String, "base64");
     const decodedString = JSON.parse(bufferObj.toString("utf8"));
     return decodedString;
+}
+
+/**
+ * Status Enum
+ * @returns 
+ */
+
+export function statusEnum () {
+    const data = {
+        FAILED: "FAILED",
+        SUCCESSFUL: "SUCCESSFUL",
+        CANCELLED: "CANCELLED",
+        PENDING: "PENDING",
+        DECLINED: "DECLINED"
+    }
+    return data;
 }

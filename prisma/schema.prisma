@@ -77,4 +77,5 @@ enum paymentstatus {
   FAILED
   DECLINED
   CANCELLED
+  SUCCESSFUL
 }

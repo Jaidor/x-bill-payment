@@ -15,7 +15,7 @@ export class PaymentsService {
      * @returns 
      */
 
-    async savePayments ( pay: any ) {
+    async savePayments ( pay: any ): Promise<any> {
         try {
             /** Save into DB */
             const paymentData = await this.prisma.payments.create({
@@ -40,7 +40,7 @@ export class PaymentsService {
         }
     }
 
-    async processWalletFunding ( data: any ) {
+    async processWalletFunding ( data: any ): Promise<boolean> {
         try {
 
             const date = new Date();
