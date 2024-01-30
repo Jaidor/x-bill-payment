@@ -30,6 +30,7 @@ model Books {
   book_type String @default("")
   book_balance Decimal @db.Decimal(40, 4)  @default(0)
   book_recon_amount Decimal @db.Decimal(40, 4) @default(0)
+  book_recon_point DateTime?
   book_status Int @default(1)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

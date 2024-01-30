@@ -61,3 +61,67 @@ export function statusEnum () {
     }
     return data;
 }
+
+/**
+ * The beginning of last
+ * month date
+ * @returns 
+ */
+
+export function theBeginningOfLastMonthDate() {
+    const currentDate = new Date();
+    let year = currentDate.getFullYear();
+    let month = currentDate.getMonth() - 1;
+    let day = 1;
+
+    // Adjust month and year if current month is January
+    if (month < 0) {
+        year -= 1;
+        month = 11; // December
+    }
+
+    const firstDayOfPreviousMonth = new Date(year, month, day);
+    const formattedYear = firstDayOfPreviousMonth.getFullYear();
+    const formattedMonth = String(firstDayOfPreviousMonth.getMonth() + 1).padStart(2, '0');
+    const formattedDay = String(firstDayOfPreviousMonth.getDate()).padStart(2, '0');
+
+    const firstDayOfPreviousMonthString = `${formattedYear}-${formattedMonth}-${formattedDay}`;
+    return firstDayOfPreviousMonthString;
+}
+
+/**
+ * Split date without ISO
+ * @param dateString 
+ * @returns 
+ */
+
+export function splitDateWithoutISO( dateString: any ) {
+    const splitted = dateString.split("-");
+    return splitted;
+}
+
+/**
+ * First date in
+ * current month
+ * @returns 
+ */
+
+export function firstDateInCurrentMonth() {
+    const currentDate = new Date();
+    const firstDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    return firstDate;
+}
+
+/**
+ * Last date in
+ * current month
+ * @returns 
+ */
+
+export function lastDateInCurrentMonth() {
+    const currentDate = new Date();
+    const lastDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    return lastDate;
+}
+
+
