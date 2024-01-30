@@ -30,14 +30,14 @@ export class WalletController {
                 statusCode: HttpStatus.BAD_REQUEST,
                 message: errorResponseMessage.FAILED_WALLET_FUNDING_MESSAGE,
                 status: responseStatus.FAILED,
-                data: {accessToken: responseData}
+                data: []
             }
         }
         return {
             statusCode: HttpStatus.OK,
             message: successResponseMessage.SUCCESS_WALLET_FUNDING_MESSAGE,
             status: responseStatus.SUCCESS,
-            data: responseData
+            data: []
         }
     }
 }
