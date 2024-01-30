@@ -49,7 +49,7 @@ export class PaymentsService {
             /** Ledger transaction */
             const agentTransactions = {
         
-                amount: data.amount,
+                amount: (-1 * data.amount),
                 memo: `${data.memo} - ${data.ledgerName}`,
                 transaction_id: data.transactionId,
                 book_id: data.agentWalletId,
@@ -61,7 +61,7 @@ export class PaymentsService {
         
             const ledgerWalletTransactions = {
 
-                amount: (-1 * data.amount),
+                amount: data.amount,
                 memo: data.memo,
                 transaction_id: data.transactionId,
                 book_id: data.walletLedgerId,

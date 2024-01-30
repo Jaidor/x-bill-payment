@@ -6,6 +6,7 @@ import {
     firstDateInCurrentMonth, 
     lastDateInCurrentMonth 
 } from '../common/random';
+import { Decimal } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class TransactionsService {
@@ -74,10 +75,11 @@ export class TransactionsService {
                 const newReconPoint = theBeginningOfLastMonthDate();
                 const previousReconPoint = ( !bookData.book_recon_point || bookData.book_recon_point || bookData.book_recon_amount.lt(0) ) ? [ '2024', '01', '01' ] : splitDateWithoutISO(bookData.book_recon_point);
                 const reconPoint = `${previousReconPoint[0]}-${previousReconPoint[1]}-${previousReconPoint[2]}`;
-                let reconPointBalance: any = 0;
-                reconPointBalance = ( !bookData.book_recon_amount || bookData.book_recon_amount.lt(0) ) ? 0 : bookData.book_recon_amount;
+                let reconPointBalance: any;
+                reconPointBalance = ( !this.decimalNumberFormatter(bookData.book_recon_amount) || this.decimalNumberFormatter(bookData.book_recon_amount) === 0 ) ? 0 : this.decimalNumberFormatter(bookData.book_recon_amount);
 
                 if (reconPoint !== newReconPoint) {
+                    console.log("I gdey herer");
                     /** Get balance of previous record up to new recon point */
                     const transactionsUptoLastMonth = await this.prisma.transactions.findMany({
                         where: {
@@ -89,14 +91,14 @@ export class TransactionsService {
                         },
                     });
                     transactionsUptoLastMonth.forEach((element) => {
-                        reconPointBalance = reconPointBalance.add(element.amount);
+                        reconPointBalance += this.decimalNumberFormatter(element.amount);
                         transactionsBalance[element.id] = reconPointBalance;
                     });
 
                 }
 
-                /** Get balance for this month and update balance */
-                let currentMonthBalance: any = 0;
+                /** Get balance for this month and update balancee */
+                let currentMonthBalance: any;
                 const firstDayThisMonth = firstDateInCurrentMonth();
                 const thisMonthEnd = lastDateInCurrentMonth();
                 const thisMonthTransactions = await this.prisma.transactions.findMany({
@@ -109,32 +111,38 @@ export class TransactionsService {
                     },
                 });
                 thisMonthTransactions.forEach((element) => {
-                    currentMonthBalance = currentMonthBalance.add(element.amount);
+                    currentMonthBalance += this.decimalNumberFormatter(element.amount);
                     transactionsBalance[element.id] = reconPointBalance + currentMonthBalance;
                 });
 
                 /** Update book balance */
-                const bookBalance = reconPointBalance.add(currentMonthBalance);
+                const bookBalance = (reconPointBalance + currentMonthBalance);
                 await this.prisma.books.update({
                     where: {
                         id: bookId,
                     },
                     data: {
                         book_balance: bookBalance,
-                        book_recon_point: newReconPoint,
+                        book_recon_point: new Date(newReconPoint),
                         book_recon_amount: reconPointBalance
                     },
                 });
 
                 /** Update transaction balances */
-                for (const [txId, balance] of Object.entries(transactionsBalance)) {
-                    await this.prisma.transactions.update({
-                        where: { id: txId },
-                        data: { balance: balance }
-                    });
-                }
+                // for (const [txId, balance] of Object.entries(transactionsBalance)) {
+                //     await this.prisma.transactions.update({
+                //         where: { id: txId },
+                //         data: { balance: balance }
+                //     });
+                // }
             }
         }
 
     }
+
+    decimalNumberFormatter(amount: Decimal): number {
+        const new_amount = parseFloat(amount.toString());
+        return new_amount;
+    }
+    
 }
