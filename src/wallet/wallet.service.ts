@@ -101,7 +101,7 @@ export class WalletService {
                               transaction_id: transactionId,
                             },
                             data: {
-                              status: statusEnum().SUCCESSFUL,
+                              status: "SUCCESSFUL",
                             },
                         });
                     } else {
@@ -110,7 +110,7 @@ export class WalletService {
                               transaction_id: transactionId,
                             },
                             data: {
-                              status: statusEnum().DECLINED,
+                              status: "DECLINED",
                             },
                         });
 
